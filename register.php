@@ -7,8 +7,8 @@ if(isset($_SESSION['level']))
 include 'database.php';
 if(isset($_POST['register']))
 {
-    $name = $_POST['name'];
-    $username = $_POST['username'];
+    $name = htmlspecialchars($_POST['name']);
+    $username = htmlspecialchars($_POST['username']);
     $password = sha1(md5($_POST['password']));
     $check = mysqli_query($connect, "SELECT * FROM users WHERE name='$name' OR username='$username'");
     $check2 = mysqli_num_rows($check);
@@ -16,7 +16,7 @@ if(isset($_POST['register']))
     {
         echo "<script>alert('User failed to added, because the name and username are already in use')</script>";
     }else{
-        $insert = mysqli_query($connect, "INSERT INTO users(name,username,password,level) VALUE('$name','$username','$password','member')");
+        $insert = mysqli_query($connect, "INSERT INTO users(name,username,password,level,sosmed) VALUE('$name','$username','$password','member','')");
         if($insert)
         {
             echo "<script>alert('User sucess added, you can login')</script>";

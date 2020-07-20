@@ -4,15 +4,18 @@ session_start();
 if(!isset($_SESSION['level']))
 {
     header("Location: index.php");
+}else if($_SESSION['level'] != 'admin')
+{
+    header("Location: index.php");
 }
 include 'database.php';
 $id = $_GET['id'];
 $name = $_SESSION['name'];
-$check = mysqli_query($connect, "SELECT * FROM article WHERE name='$name' AND article_id='$id'");
+$check = mysqli_query($connect, "SELECT * FROM article WHERE article_id='$id'");
 $check2 = mysqli_num_rows($check);
 if($check2<1)
 {
-    header("Location: manage-article.php");
+    header("Location: all-article.php");
 }else{
     $eksekusi = "<script>document.write(eksekusi)</script>";
     while($d = mysqli_fetch_array($check))
@@ -28,9 +31,9 @@ if($check2<1)
                         var a = confirm('Success to Publish');
                         if(a == true)
                         {
-                            window.location.href = 'manage-article.php';
+                            window.location.href = 'all-article.php';
                         }else{
-                            window.location.href = 'manage-article.php';
+                            window.location.href = 'all-article.php';
                         }
                   </script>";
         }else{
@@ -40,7 +43,7 @@ if($check2<1)
                     {
                         window.location.href = 'contact.php';
                     }else{
-                        window.location.href = 'manage-article.php';
+                        window.location.href = 'all-article.php';
                     }
                   </script>";
         }
@@ -53,9 +56,9 @@ if($check2<1)
                         var a = confirm('Success to Unpublish');
                         if(a == true)
                         {
-                            window.location.href = 'manage-article.php';
+                            window.location.href = 'all-article.php';
                         }else{
-                            window.location.href = 'manage-article.php';
+                            window.location.href = 'all-article.php';
                         }
                   </script>";
         }else{
@@ -65,7 +68,7 @@ if($check2<1)
                         {
                             window.location.href = 'contact.php';
                         }else{
-                            window.location.href = 'manage-article.php';
+                            window.location.href = 'all-article.php';
                         }
                   </script>";
         }

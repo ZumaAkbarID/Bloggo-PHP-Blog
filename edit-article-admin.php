@@ -7,11 +7,11 @@ if(!isset($_SESSION['level']))
 include 'database.php';
 if(!isset($_GET['id']))
 {
-    header("Location: manage-article.php");
+    header("Location: all-article.php");
 }else{
     $name = $_SESSION['name'];
     $article_id = $_GET['id'];
-    $check = mysqli_query($connect, "SELECT * FROM article WHERE name='$name' AND article_id='$article_id'");
+    $check = mysqli_query($connect, "SELECT * FROM article WHERE article_id='$article_id'");
     $check2 = mysqli_num_rows($check);
     if($check2<1)
     {
@@ -19,9 +19,9 @@ if(!isset($_GET['id']))
                 var conf = confirm('Are you sure thats your article?, Check Again!');
                 if (conf == true)
                 {
-                    window.location.href = 'manage-article.php';
+                    window.location.href = 'all-article.php';
                 }else{
-                    window.location.href = 'manage-article.php';
+                    window.location.href = 'all-article.php';
                 }
             </script>";
     }
@@ -29,11 +29,12 @@ if(!isset($_GET['id']))
     {
         $titles = htmlspecialchars($_POST['title']);
         $subtitle = htmlspecialchars($_POST['subtitle']);
+        $names = htmlspecialchars($_POST['name']);
         $content1 = htmlspecialchars($_POST['content1']);
         $content2 = htmlspecialchars(@$_POST['content2']);
         $content3 = htmlspecialchars(@$_POST['content3']);
         $newDate = date("d-m-Y");
-        $save1 = mysqli_query($connect, "UPDATE article SET title='$titles', subtitle='$subtitle', newDate='$newDate' WHERE article_id='$article_id'");
+        $save1 = mysqli_query($connect, "UPDATE article SET name='$names', title='$titles', subtitle='$subtitle', newDate='$newDate' WHERE article_id='$article_id'");
         $save2 = mysqli_query($connect, "UPDATE article_details SET title='$titles', content1='$content1', content2='$content2', content3='$content3' WHERE article_id='$article_id'");
         if($save1 && $save2)
         {
@@ -85,7 +86,7 @@ if(!isset($_GET['id']))
         <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
         <form name="sentMessage" id="contactForm" method="post" action="" novalidate>
         <?php 
-            $getVal = mysqli_query($connect, "SELECT * FROM article WHERE name='$name' AND article_id='$article_id'");
+            $getVal = mysqli_query($connect, "SELECT * FROM article WHERE article_id='$article_id'");
             while($d = mysqli_fetch_array($getVal)) :
                 $title = $d['title'];
                 $getDet = mysqli_query($connect, "SELECT * FROM article_details WHERE title='$title'");
@@ -96,6 +97,13 @@ if(!isset($_GET['id']))
             <div class="form-group floating-label-form-group controls">
               <label>Title</label>
               <input type="text" maxlength="25" class="form-control" placeholder="Title" name="title" id="username" required data-validation-required-message="Please enter a title." value="<?= $d['title'] ?>">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Name</label>
+              <input type="text" maxlength="25" class="form-control" placeholder="Name" name="name" id="username" required data-validation-required-message="Please enter a name." value="<?= $d['name'] ?>">
               <p class="help-block text-danger"></p>
             </div>
           </div>

@@ -4,6 +4,9 @@ include 'database.php';
 if(!isset($_SESSION['level']))
 {
     header("Location: index.php");
+}else if($_SESSION['level'] != 'admin')
+{
+    header("Location: index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -11,7 +14,7 @@ if(!isset($_SESSION['level']))
 
 <head>
 
-  <title>Article Manager | Bloggo</title>
+  <title>Users Manager | Bloggo</title>
 
   <?php include 'include/head.php' ?>
 
@@ -44,18 +47,18 @@ if(!isset($_SESSION['level']))
             <thead>
                 <?php
                     $name = $_SESSION['name'];
-                    $pers = mysqli_query($connect, "SELECT * FROM article WHERE name='$name'");
+                    $pers = mysqli_query($connect, "SELECT * FROM users");
                     $persCount = mysqli_num_rows($pers);
-                    $all = mysqli_query($connect, "SELECT * FROM article");
+                    $all = mysqli_query($connect, "SELECT * FROM users");
                     $allCount = mysqli_num_rows($all);
                 ?>
                 <caption><?= $persCount ?> Found in <?= $allCount ?> Data</caption>
                 <tr>
                     <th>No.</th>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th>Date Edited</th>
-                    <th>Status</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Level</th>
+                    <th>Sosmed</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -63,30 +66,19 @@ if(!isset($_SESSION['level']))
                 
                     <?php
                         $i = 1;
-                        $check = mysqli_query($connect, "SELECT * FROM article WHERE name='$name'");
+                        $check = mysqli_query($connect, "SELECT * FROM users ORDER BY id ASC");
                         while($d = mysqli_fetch_array($check)) :
                     ?>
                     <tr>
                         <td><?= $i ?></td>
-                        <td><?= $d['title'] ?></td>
-                        <td><?= $d['date'] ?></td>
-                        <td><?= $d['newDate'] ?></td>
-                        <td><?= $d['status'] ?></td>
+                        <td><?= $d['name'] ?></td>
+                        <td><?= $d['username'] ?></td>
+                        <td><?= $d['level'] ?></td>
+                        <td><?= $d['sosmed'] ?></td>
                         <td>
-                            <ul class="mr-2 row">
-                                <li><a href="edit-article.php?id=<?= $d['article_id'] ?>" >Edit</a></li>
-
-                                
-                                <?php  
-                                  if($d['status']=="unpublished")
-                                  {
-                                    echo "<li><a href='publish-unpublish.php?id=".$d['article_id']."'> Publish</a></li>";
-                                  }else{
-                                    echo "<li><a href='publish-unpublish.php?id=".$d['article_id']."'> Unpublish</a></li>";
-                                  }
-                                ?>
-
-                                <li><a href="del-article.php?id=<?= $d['article_id'] ?>">Delete</a></li>
+                            <ul class="mr-1 row">
+                                <li><a href="edit-users.php?id=<?= $d['id'] ?>" >Edit</a></li>
+                                <li><a href="del-users.php?id=<?= $d['id'] ?>">Delete</a></li>
                             </ul>
                         </td>
                     </tr>        

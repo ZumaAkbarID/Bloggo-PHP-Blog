@@ -8,35 +8,46 @@ include 'database.php';
 if(isset($_POST['write']))
 {
     $name = $_SESSION['name'];
-    $title = $_POST['title'];
-    $subtitle = $_POST['subtitle'];
-    $content1 = $_POST['content1'];
-    $content2 = @$_POST['content2'];
-    $content3 = @$_POST['content3'];
-    $date = date("d-m-Y");
-
-    $check = mysqli_query($connect, "SELECT * FROM article WHERE title='$title'");
-    $check2 = mysqli_num_rows($check);
-    if($check2>0)
-    {
-        echo "<script>alert('Title arledy used!')</script>";
+    $title = htmlspecialchars($_POST['title']);
+    if(empty($title)){
+      echo "<script>alert('Field title empty!')</script>";
     }else{
-        $check3 = mysqli_query($connect, "SELECT * FROM article_details WHERE title='$title'");
-        $check4 = mysqli_num_rows($check3);
-        if($check4>0)
-        {
-            echo "<script>alert('Title arledy used!')</script>";
+      $subtitle = htmlspecialchars($_POST['subtitle']);
+      if(empty($subtitle)){
+        echo "<script>alert('Field subtitle empty!')</script>";
+      }else{
+        $content1 = htmlspecialchars($_POST['content1']);
+        if(empty($content1)){
+          echo "<script>alert('Field content must not empty!')</script>";
         }else{
-            $save1 = mysqli_query($connect, "INSERT INTO article(name,title,subtitle,date,newDate,status) VALUE('$name','$title','$subtitle','$date','','unpublished')");
-            $save2 = mysqli_query($connect, "INSERT INTO article_details(title,content1,content2,content3) VALUE('$title','$content1','$content2','$content3')");
-            if($save1)
+          $content2 = htmlspecialchars(@$_POST['content2']);
+          $content3 = htmlspecialchars(@$_POST['content3']);
+          $date = date("d-m-Y");
+          $check = mysqli_query($connect, "SELECT * FROM article WHERE title='$title'");
+          $check2 = mysqli_num_rows($check);
+          if($check2>0)
+          {
+            echo "<script>alert('Title arledy used!')</script>";
+          }else{
+            $check3 = mysqli_query($connect, "SELECT * FROM article_details WHERE title='$title'");
+            $check4 = mysqli_num_rows($check3);
+            if($check4>0)
             {
+              echo "<script>alert('Title arledy used!')</script>";
+            }else{
+              $save1 = mysqli_query($connect, "INSERT INTO article(name,title,subtitle,date,newDate,status) VALUE('$name','$title','$subtitle','$date','','unpublished')");
+              $save2 = mysqli_query($connect, "INSERT INTO article_details(title,content1,content2,content3) VALUE('$title','$content1','$content2','$content3')");
+              if($save1)
+              {
                 if($save2)
                 {
                     echo "<script>alert('Save success, you can publish in Article Manager')</script>";
                 }
+              }
             }
+          }
         }
+      }
     }
 }
 ?>

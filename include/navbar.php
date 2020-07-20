@@ -12,13 +12,13 @@
             <a class="nav-link" href="index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="about.php">About</a>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="post.html">Sample Post</a>
           </li> -->
           <li class="nav-item">
-            <a class="nav-link" href="contact.html">Contact</a>
+            <a class="nav-link" href="contact.php">Contact</a>
           </li>
           <?php
             if(!isset($_SESSION['level']))
@@ -41,8 +41,8 @@
                     <li class='nav-item dropdown'>
                       <a class='nav-link dropdown-toggle' id='navbardrop' data-toggle='dropdown' href=''>Manage Blog</a>
                         <div class='dropdown-menu dropdown-menu-right animate'>
-                          <a href='' class='dropdown-item'>Manage Users</a>
-                          <a href='' class='dropdown-item'>Manage Article</a>
+                          <a href='manage-users.php' class='dropdown-item'>Manage Users</a>
+                          <a href='all-article.php' class='dropdown-item'>Manage Article</a>
                         </div>
                     </li>
                 ";
@@ -55,15 +55,13 @@
                   <a class='nav-link dropdown-toggle' id='navbardrop' data-toggle='dropdown' href=''>Article</a>
                   <div class='dropdown-menu dropdown-menu-right animate'>
                     <a href='write-article.php' class='dropdown-item'>Write Article</a>
-                    <a href='manage-article.php' class='dropdown-item'>Manage Your Article</a>
+                    <a href='manage-article.php' class='dropdown-item'>Manage Article</a>
                   </div>
                 </li>
                 <li class='nav-item dropdown'>
                   <a class='nav-link dropdown-toggle' id='navbardrop' data-toggle='dropdown' href=''>Hi, ".$_SESSION['name']."</a>
                   <div class='dropdown-menu dropdown-menu-right animate'>
-                    <a href='' class='dropdown-item'>Profile</a>
-                    <a href='' class='dropdown-item'>Change Username</a>
-                    <a href='' class='dropdown-item'>Change Password</a>
+                    <a href='profile.php' class='dropdown-item'>Profile</a>
                     <div class='dropdown-divider'></div>
                     <a href='logout.php' class='dropdown-item'>Logout</a>
                   </div>

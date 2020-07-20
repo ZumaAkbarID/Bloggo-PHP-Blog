@@ -1,5 +1,7 @@
 <?php 
-session_start()
+session_start();
+include 'database.php';
+$name = $_SESSION['name'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,61 +38,40 @@ session_start()
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="post-preview">
-          <a href="post.html">
+          <?php 
+            $check = mysqli_query($connect, "SELECT * FROM article WHERE status='published'");
+            while($d = mysqli_fetch_array($check)) :
+          ?>
+          <a href="post.php?id=<?= $d['article_id'] ?>">
             <h2 class="post-title">
-              Man must explore, and this is exploration at its greatest
+              <?= $d['title'] ?>
             </h2>
             <h3 class="post-subtitle">
-              Problems look mighty small from 150 miles up
+            <?= $d['subtitle'] ?>
             </h3>
           </a>
           <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on September 24, 2019</p>
+            <?php
+              $nm = $d['name'];
+              $check2 = mysqli_query($connect, "SELECT * FROM users WHERE name='$nm'");
+              while($a = mysqli_fetch_array($check2)) :
+            ?>
+            <a target="_blank" href="<?= $a['sosmed'] ?>"><?= $d['name'] ?></a>
+              <?php endwhile; ?>
+            on <?php 
+                if(!empty($d['newDate']))
+                {
+                  echo $d['date']." And Update on ".$d['newDate'];
+                }else{
+                  echo $d['date'];
+                }
+               ?></p>
         </div>
         <hr>
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
-            </h2>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on September 18, 2019</p>
-        </div>
-        <hr>
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Science has not yet mastered prophecy
-            </h2>
-            <h3 class="post-subtitle">
-              We predict too much for the next year and yet far too little for the next ten.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on August 24, 2019</p>
-        </div>
-        <hr>
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Failure is not an option
-            </h2>
-            <h3 class="post-subtitle">
-              Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on July 8, 2019</p>
-        </div>
-        <hr>
+            <?php endwhile; ?>
         <!-- Pager -->
         <div class="clearfix">
-          <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+          <!-- <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a> -->
         </div>
       </div>
     </div>
