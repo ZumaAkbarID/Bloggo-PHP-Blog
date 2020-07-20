@@ -62,8 +62,19 @@ if(!isset($_SESSION['level']))
             <tbody>
                 
                     <?php
+                        $DataOnePage = 5;
+                        $check3 = $check = mysqli_query($connect, "SELECT * FROM article WHERE name='$name'");
+                        $AllData = mysqli_num_rows($check3);
+                        $AllPage = ceil($AllData / $DataOnePage);
+                        if(isset($_GET['page']))
+                        {
+                          $activePage = $_GET['page'];
+                        }else{
+                          $activePage = 1;
+                        }
+                        $FirstData = ($DataOnePage * $activePage) - $DataOnePage;
                         $i = 1;
-                        $check = mysqli_query($connect, "SELECT * FROM article WHERE name='$name'");
+                        $check = mysqli_query($connect, "SELECT * FROM article WHERE name='$name' LIMIT $FirstData, $DataOnePage");
                         while($d = mysqli_fetch_array($check)) :
                     ?>
                     <tr>
@@ -96,7 +107,23 @@ if(!isset($_SESSION['level']))
         <hr>
         <!-- Pager -->
         <div class="clearfix">
-          <!-- <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a> -->
+          <ul class="pagination justify-content-center">
+          <?php if($activePage > 1) : ?>
+            <li class="page-item"><a class="page-link" href="?page=<?= $activePage - 1; ?>">Previous</a></li>
+          <?php else : ?>
+            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+          <?php endif; ?>
+
+          <?php for($i = 1; $i <= $AllPage; $i++) : ?>
+            <li class="page-item"><a class="page-link" href="?page=<?= $i; ?>"><?= $i ?></a></li>
+          <?php endfor; ?>
+            
+          <?php if($activePage < $AllPage) : ?>
+            <li class="page-item"><a class="page-link" href="?page=<?= $activePage + 1; ?>">Next</a></li>
+          <?php else : ?>
+            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+          <?php endif; ?>
+          </ul>
         </div>
       </div>
     </div>
